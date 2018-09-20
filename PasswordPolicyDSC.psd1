@@ -33,7 +33,7 @@ Copyright = '(c) Michael Greene. All rights reserved.'
 Description = 'Composite resource to simplify managing password policies locally on a Windows Server'
 
 # Minimum version of the PowerShell engine required by this module
-# PowerShellVersion = ''
+PowerShellVersion = '5.0'
 
 # Name of the PowerShell host required by this module
 # PowerShellHostName = ''

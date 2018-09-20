@@ -10,6 +10,8 @@ install:
       $env:psmodulepath = $env:psmodulepath + ";$env:APPVEYOR_BUILD_FOLDER"
       Import-Module -Name "$env:APPVEYOR_BUILD_FOLDER\DscResource.Tests\AppVeyor.psm1"
       Invoke-AppveyorInstallTask
+  - ps: |
+      Install-Module SecurityPolicyDsc
 environment:
   APIKEY:
     secure: xQyAvpwa7/xHj0aSKBT81UeFjHWiG09U+nE5bobRvE3iCb9rG27NdDlR8XT1EavM
