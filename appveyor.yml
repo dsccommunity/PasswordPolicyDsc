@@ -1,0 +1,59 @@
+#---------------------------------#
+#      environment configuration  #
+#---------------------------------#
+os: Unstable
+version: 0.1.{build}
+install:
+  - ps: |
+      $moduleName = $env:APPVEYOR_PROJECT_NAME
+      $env:psmodulepath = $env:psmodulepath + ";$env:APPVEYOR_BUILD_FOLDER"
+      Import-Module -Name "$env:APPVEYOR_BUILD_FOLDER\DscResource.Tests\AppVeyor.psm1"
+      Invoke-AppveyorInstallTask
+environment:
+  APIKEY:
+    secure: xQyAvpwa7/xHj0aSKBT81UeFjHWiG09U+nE5bobRvE3iCb9rG27NdDlR8XT1EavM
+
+#---------------------------------#
+#      build configuration        #
+#---------------------------------#
+
+build: false
+
+#---------------------------------#
+#      test configuration         #
+#---------------------------------#
+
+test_script:
+  - ps: |
+      Invoke-AppveyorTestScriptTask `
+        -Type 'Default' `
+        -CodeCoverage `
+        -CodeCovIo
+
+#---------------------------------#
+#      deployment configuration   #
+#---------------------------------#
+
+# scripts to run before deployment
+
+# NOTE The manifest file should be dynamically identified, as should the module version data in the file
+before_deploy:
+  - ps: |
+      Invoke-AppveyorAfterTestTask -ResourceModuleName $moduleName
+  - ps: |
+      # Update Manifest File
+      $manifest = Join-Path $pwd\$env:APPVEYOR_PROJECT_NAME "$env:APPVEYOR_PROJECT_NAME.psd1"
+      (Get-Content $manifest -Raw).Replace("0.1.0", $env:APPVEYOR_BUILD_VERSION) | Set-Content $manifest
+
+#---------------------------------#
+#      after build                #
+#---------------------------------#
+
+on_finish:
+  - ps: |
+      #$blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+
+deploy_script:
+  - ps: |
+      write-host "the current branch is $env:APPVEYOR_REPO_BRANCH"
+      if($env:APPVEYOR_REPO_BRANCH -eq 'Master'){Publish-Module -NuGetAPIKey $env:APIKEY -Name $env:APPVEYOR_PROJECT_NAME}

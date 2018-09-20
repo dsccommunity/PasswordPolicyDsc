@@ -1,5 +1,14 @@
+# PasswordPolicyDsc
 
-# Contributing
+[![Build status](https://ci.appveyor.com/api/projects/status/rt71xrs58kd75sp9/branch/master?svg=true)](https://ci.appveyor.com/project/mgreenegit/passwordpolicydsc/branch/master)
+
+This is a composite resource wrapping settings from the SecurityPolicyDsc resource.
+The intent of this resource is to align with Azure Policy Guest Configuration definition
+"[Preview]: Audit Password security settings inside Linux and Windows virtual machines".
+Adding this resource with no properties to a configuration will configure a Windows Server
+with password policy settings that comply with the Azure Policy definition.
+
+## Contributing
 
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
 Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
