@@ -4,6 +4,7 @@
 os: Unstable
 version: 0.1.{build}
 install:
+  - git clone https://github.com/PowerShell/DscResource.Tests
   - ps: |
       $moduleName = $env:APPVEYOR_PROJECT_NAME
       $env:psmodulepath = $env:psmodulepath + ";$env:APPVEYOR_BUILD_FOLDER"
